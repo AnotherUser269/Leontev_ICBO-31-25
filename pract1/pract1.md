@@ -87,6 +87,7 @@ Task8:
 ```
 #!/bin/bash
 tar cf "$(printf '%s' "$1" | tr -d '.')_file_archive.tar" -- *"$1"
+```
 
 Task9:
 #!/bin/bash
