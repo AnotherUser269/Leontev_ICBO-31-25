@@ -36,6 +36,7 @@ Task4:
 ```
 #!/bin/bash
 cat "$1" | grep -o "[A-Za-z_$][A-Za-z0-9_$]*" | sort | uniq
+```
 
 Task5:
 #!/bin/bash
