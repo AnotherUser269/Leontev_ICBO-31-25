@@ -39,6 +39,7 @@ cat "$1" | grep -o "[A-Za-z_$][A-Za-z0-9_$]*" | sort | uniq
 ```
 
 Task5:
+```
 #!/bin/bash
 chmod +x "$1"
 cp "$1" "$PREFIX/bin"
@@ -91,6 +92,7 @@ tar cf "$(printf '%s' "$1" | tr -d '.')_file_archive.tar" -- *"$1"
 ```
 
 Task9:
+```
 #!/bin/bash
 sed 's/    /\t/g' < "$1" > "$2"
 ```
