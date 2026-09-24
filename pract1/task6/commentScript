@@ -1,0 +1,25 @@
+#!/bin/bash
+
+shopt -s nullglob globstar
+
+for file in **/*.{c,js,py}; do
+	firstLine="$(head -n 1 "$file")"
+
+	# Python comment
+	if [[ "$file" == *.py ]]; then
+		if grep -q '^#' <<< "$firstLine"; then
+			echo "$file"
+		fi
+	# .c comment
+	elif [[ "$file" == *.c ]]; then
+		if grep -qE '^(//|/\*)' <<< "$firstLine"; then
+			echo "$file"
+		fi
+	# .js comment
+	elif [[ "$file" == *.js ]]; then
+                if grep -qE '^(//|/\*)' <<< "$firstLine"; then
+                        echo "$file"
+                fi
+	fi
+
+done

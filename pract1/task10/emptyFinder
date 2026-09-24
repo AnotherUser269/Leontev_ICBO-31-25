@@ -1,0 +1,7 @@
+#!/bin/bash
+
+for file in "$1"/*; do
+	if [ ! -s "$file" ] && grep -qEi "\.(docx|doc|txt)$" <<< "$file"; then 
+		printf '%s\n' "$file"
+	fi
+done
