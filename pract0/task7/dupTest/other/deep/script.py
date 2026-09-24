@@ -1,2 +1,0 @@
-# unique python
-print("alone")
