@@ -107,3 +107,5 @@ for file in "$1"/*; do
 	fi
 done
 ```
+
+Продолжение по ссылке: https://github.com/AnotherUser269/Leontev_ICBO-31-25/tree/master/MireaConfig01
