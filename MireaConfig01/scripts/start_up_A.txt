@@ -1,0 +1,6 @@
+ls
+ls ./a
+ls ./a ./b
+cd
+cd ..
+cd ./a ./a

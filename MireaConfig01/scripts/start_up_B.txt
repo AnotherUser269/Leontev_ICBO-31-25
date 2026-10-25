@@ -1,0 +1,9 @@
+ls
+
+ls
+
+cd
+
+cd
+
+exit
