@@ -54,8 +54,14 @@ def _get_deps_from_pypi(package: str, version: str) -> List[str]:
     else:
         url = PYPI_URL_TEMPLATE.format(package=package, version=version)
 
+    # Добавляем User-Agent, чтобы PyPI не блокировал запросы
+    req = urllib.request.Request(
+        url, 
+        headers={'User-Agent': 'DependencyGraphVisualizer/1.0'}
+    )
+
     try:
-        with urllib.request.urlopen(url) as response:
+        with urllib.request.urlopen(req) as response:
             data = json.loads(response.read().decode())
     except Exception as e:
         print(f"Failed to fetch data from PyPI: {e}")

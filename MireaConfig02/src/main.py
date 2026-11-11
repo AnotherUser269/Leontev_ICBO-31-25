@@ -1,7 +1,7 @@
 """Точка входа в приложение."""
 import sys
 from src.config import parse_args, print_config
-from src.fetcher import get_direct_dependencies
+from src.analyzer import build_transitive_graph
 
 
 def main() -> None:
@@ -10,10 +10,13 @@ def main() -> None:
         config = parse_args()
         print_config(config)
         
-        print("\nDirect dependencies:")
-        deps = get_direct_dependencies(config)
-        for dep in deps:
-            print(f"- {dep}")
+        print("\nBuilding dependency graph...")
+        graph = build_transitive_graph(config)
+        
+        print("\nGraph edges:")
+        for pkg, deps in graph.graph.items():
+            for dep in deps:
+                print(f"{pkg} -> {dep}")
             
     except ValueError as e:
         print(f"Error: {e}", file=sys.stderr)
