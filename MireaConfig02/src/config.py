@@ -15,6 +15,7 @@ class Config:
     output: str
     max_depth: int
     filter_substring: str
+    reverse: bool
 
 
 def parse_args() -> Config:
@@ -63,7 +64,8 @@ def parse_args() -> Config:
         version=args.version,
         output=args.output,
         max_depth=args.max_depth,
-        filter_substring=args.filter
+        filter_substring=args.filter,
+        reverse=args.reverse
     )
 
 
@@ -96,3 +98,4 @@ def print_config(config: Config) -> None:
     print(f"output={config.output}")
     print(f"max_depth={config.max_depth}")
     print(f"filter={config.filter_substring}")
+    print(f"reverse={config.reverse}")  # <--- ВЫВОДИМ НА ЭКРАН

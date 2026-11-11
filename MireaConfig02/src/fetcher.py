@@ -2,12 +2,13 @@
 import json
 import re
 import urllib.request
+import urllib.error
 from typing import List, Dict
 from src.config import Config
 
 PYPI_URL_TEMPLATE = "https://pypi.org/pypi/{package}/{version}/json"
 PYPI_URL_LATEST = "https://pypi.org/pypi/{package}/json"
-PKG_NAME_REGEX = r"^([a-zA-Z0-9\-_]+)"
+PKG_NAME_REGEX = r"^([a-zA-Z0-9\-_\.]+)"
 
 
 def get_direct_dependencies(config: Config) -> List[str]:
@@ -25,15 +26,7 @@ def get_direct_dependencies(config: Config) -> List[str]:
 
 
 def _get_deps_from_test_file(filepath: str, package: str) -> List[str]:
-    """Чтение зависимостей из тестового файла.
-
-    Args:
-        filepath: Путь к файлу.
-        package: Имя пакета.
-
-    Returns:
-        Список зависимостей.
-    """
+    """Чтение зависимостей из тестового файла."""
     with open(filepath, "r", encoding="utf-8") as file:
         data: Dict[str, List[str]] = json.load(file)
     return data.get(package, [])
@@ -54,17 +47,19 @@ def _get_deps_from_pypi(package: str, version: str) -> List[str]:
     else:
         url = PYPI_URL_TEMPLATE.format(package=package, version=version)
 
-    # Добавляем User-Agent, чтобы PyPI не блокировал запросы
     req = urllib.request.Request(
-        url, 
-        headers={'User-Agent': 'DependencyGraphVisualizer/1.0'}
+        url,
+        headers={"User-Agent": "DependencyGraphVisualizer/1.0"}
     )
 
     try:
-        with urllib.request.urlopen(req) as response:
-            data = json.loads(response.read().decode())
+        with urllib.request.urlopen(req, timeout=10) as response:
+            data = json.loads(response.read().decode("utf-8"))
+    except urllib.error.HTTPError as e:
+        print(f"[warn] HTTP {e.code} for {url}")
+        return []
     except Exception as e:
-        print(f"Failed to fetch data from PyPI: {e}")
+        print(f"[warn] request failed for {url}: {e}")
         return []
 
     requires_dist = data.get("info", {}).get("requires_dist")
@@ -75,14 +70,7 @@ def _get_deps_from_pypi(package: str, version: str) -> List[str]:
 
 
 def _parse_requires_dist(requires_dist: List[str]) -> List[str]:
-    """Парсинг строк requires_dist.
-
-    Args:
-        requires_dist: Список строк с зависимостями.
-
-    Returns:
-        Очищенный список имен пакетов.
-    """
+    """Парсинг строк requires_dist."""
     deps = []
     for req in requires_dist:
         match = re.match(PKG_NAME_REGEX, req)

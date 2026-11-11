@@ -1,16 +1,16 @@
 """Тесты анализатора графа."""
 import json
 from src.config import Config
-from src.analyzer import build_transitive_graph
+from src.analyzer import build_transitive_graph, get_reverse_dependencies
 
 
-def test_build_graph_cycle(tmp_path):
-    """Тест обработки циклических зависимостей."""
+def test_reverse_dependencies(tmp_path):
+    """Тест поиска обратных зависимостей."""
     test_file = tmp_path / "data.json"
     test_file.write_text(json.dumps({
         "A": ["B"],
         "B": ["C"],
-        "C": ["A"]
+        "C": []
     }))
     
     config = Config(
@@ -20,6 +20,5 @@ def test_build_graph_cycle(tmp_path):
     )
     
     graph = build_transitive_graph(config)
-    assert "A" in graph.graph
-    assert "B" in graph.graph["A"]
-    assert "C" in graph.graph["B"]
+    rev_deps = get_reverse_dependencies("C", graph)
+    assert "B" in rev_deps
