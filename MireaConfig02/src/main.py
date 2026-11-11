@@ -2,6 +2,7 @@
 import sys
 from src.config import parse_args, print_config
 from src.analyzer import build_transitive_graph, get_reverse_dependencies
+from src.visualizer import save_visualization
 
 
 def main() -> None:
@@ -27,11 +28,13 @@ def main() -> None:
                 for dep in deps:
                     print(f"{pkg} -> {dep}")
 
-    except ValueError as e:
-        print(f"Error: {e}", file=sys.stderr)
+            print("\nVisualizing graph...")
+            save_visualization(graph, config.output)
+
+    except ValueError as error:
+        print(f"Error: {error}", file=sys.stderr)
         sys.exit(1)
 
 
 if __name__ == "__main__":
     main()
-
