@@ -24,48 +24,30 @@ def parse_args() -> Config:
     Returns:
         Config: Объект с настройками.
     """
-    parser = argparse.ArgumentParser(
-        description="Package Dependency Graph Visualizer"
-    )
-    parser.add_argument(
-        "--package", required=True, help="Name of the package"
-    )
-    parser.add_argument(
-        "--source", required=True, help="Repo URL or test file path"
-    )
-    parser.add_argument(
-        "--test-mode", action="store_true", help="Enable test mode"
-    )
-    parser.add_argument(
-        "--version", default="latest", help="Package version"
-    )
-    parser.add_argument(
-        "--output", default="graph.png", help="Output image filename"
-    )
+    parser = argparse.ArgumentParser(description="Package Dependency Graph Visualizer")
+    parser.add_argument("--package", required=True, help="Name of the package")
+    parser.add_argument("--source", required=True, help="Repo URL or test file path")
+    parser.add_argument("--test-mode", action="store_true", help="Enable test mode")
+    parser.add_argument("--version", default="latest", help="Package version")
+    parser.add_argument("--output", default="graph.png", help="Output image filename")
     parser.add_argument(
         "--max-depth", type=int, default=MAX_DEPTH_DEFAULT,
         help="Maximum analysis depth"
     )
+    parser.add_argument("--filter", default="", help="Substring for package filtering")
     parser.add_argument(
-        "--filter", default="", help="Substring for package filtering"
-    )
-    parser.add_argument(
-        "--reverse", action="store_true", help="Show reverse dependencies"
+        "--reverse", action="store_true",
+        help="Show reverse dependencies"
     )
 
     args = parser.parse_args()
-    
     validate_args(args)
 
     return Config(
-        package=args.package,
-        source=args.source,
-        test_mode=args.test_mode,
-        version=args.version,
-        output=args.output,
-        max_depth=args.max_depth,
-        filter_substring=args.filter,
-        reverse=args.reverse
+        package=args.package, source=args.source,
+        test_mode=args.test_mode, version=args.version,
+        output=args.output, max_depth=args.max_depth,
+        filter_substring=args.filter, reverse=args.reverse
     )
 
 
@@ -80,7 +62,7 @@ def validate_args(args: argparse.Namespace) -> None:
     """
     if args.max_depth < MAX_DEPTH_DEFAULT:
         raise ValueError("Max depth must be >= -1")
-    
+
     if not args.test_mode and args.source == "":
         raise ValueError("Source cannot be empty in normal mode")
 
@@ -98,4 +80,4 @@ def print_config(config: Config) -> None:
     print(f"output={config.output}")
     print(f"max_depth={config.max_depth}")
     print(f"filter={config.filter_substring}")
-    print(f"reverse={config.reverse}")  # <--- ВЫВОДИМ НА ЭКРАН
+    print(f"reverse={config.reverse}")

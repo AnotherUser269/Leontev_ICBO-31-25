@@ -6,16 +6,19 @@ from src.config import validate_args
 def test_validate_args_success():
     """Тест успешной валидации."""
     class MockArgs:
+        """Мок-объект аргументов командной строки."""
         max_depth = 2
         test_mode = False
         source = "url"
 
-    validate_args(MockArgs())  # Не должно быть исключений
+    # Не должно быть исключений
+    validate_args(MockArgs())
 
 
 def test_validate_args_fail_depth():
     """Тест некорректной глубины."""
     class MockArgs:
+        """Мок-объект аргументов командной строки."""
         max_depth = -2
         test_mode = False
         source = "url"
