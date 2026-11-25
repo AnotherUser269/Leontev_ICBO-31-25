@@ -1,0 +1,27 @@
+start: _NL* (statement _NL*)*
+?statement: const_decl | expr
+const_decl: "def" NAME "=" expr
+?expr: dict | list_expr | const_eval | number | string | NAME
+
+list_expr: "list" "(" ")"
+         | "list" "(" _NL* expr (_sep expr)* _NL* ")"
+
+dict: "{" "}"
+    | "{" _NL* pair (_sep pair)* _NL* "}"
+
+pair: NAME "=" expr
+const_eval: "$[" NAME "]"
+number: /[+-]?\d+\.\d+/
+string: /'[^']*'/
+NAME: /[a-z][a-z0-9_]*/
+
+COMMENT: /;[^\n]*/
+MULTILINE_COMMENT: /<#(.|\n)*?#>/
+
+_sep: ("," | _NL)+
+
+_NL: (NEWLINE | COMMENT | MULTILINE_COMMENT)+
+NEWLINE: /\r?\n/
+
+%import common.WS_INLINE
+%ignore WS_INLINE

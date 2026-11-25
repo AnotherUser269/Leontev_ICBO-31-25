@@ -1,0 +1,16 @@
+.PHONY: install test lint run clean
+
+install:
+	pip install -r requirements.txt
+
+test:
+	pytest tests/ -v
+
+lint:
+	flake8 src/ tests/ --max-line-length=80
+
+run:
+	python -m src.main output.xml
+
+clean:
+	rm -rf __pycache__ .pytest_cache output.xml

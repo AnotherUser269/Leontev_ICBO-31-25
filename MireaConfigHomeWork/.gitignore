@@ -1,0 +1,54 @@
+# --- Python ---
+# Байт-код и кэш
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Виртуальные окружения
+.venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Артефакты сборки и дистрибутивы
+build/
+dist/
+*.egg-info/
+.eggs/
+*.egg
+
+# --- Тестирование ---
+# Кэш pytest и покрытие
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+
+# --- IDE / Редакторы ---
+# (Важно: в задании сказано не коммитить файлы с настройками редактора)
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# --- OS ---
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# --- Проект ---
+# Выходные файлы, которые генерирует наш транслятор
+output.xml
+*.xml
+!examples/*.xml
